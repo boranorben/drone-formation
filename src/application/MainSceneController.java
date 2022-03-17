@@ -122,8 +122,63 @@ public class MainSceneController implements Initializable {
 
 	public void updateDronesPos() {
 		for (Drone drone : this.controlBase.getDrones()) {
-			this.droneImgViews.get(drone.getId()).setX(drone.getX());
-			this.droneImgViews.get(drone.getId()).setY(drone.getY());
+			ImageView imgView = this.droneImgViews.get(drone.getId());
+
+			imgView.setX(drone.getX());
+			imgView.setY(drone.getY());
+			switch (drone.getDirection()) {
+			case N:
+				imgView.setRotate(0);
+				break;
+			case NNE:
+				imgView.setRotate(-22.5);
+				break;
+			case NE:
+				imgView.setRotate(-45);
+				break;
+			case ENE:
+				imgView.setRotate(-67.5);
+				break;
+			case E:
+				imgView.setRotate(-90);
+				break;
+			case ESE:
+				imgView.setRotate(-112.50);
+				break;
+			case SE:
+				imgView.setRotate(-135);
+				break;
+			case SSE:
+				imgView.setRotate(-157.50);
+				break;
+			case S:
+				imgView.setRotate(-180);
+				break;
+			case SSW:
+				imgView.setRotate(-202.50);
+				break;
+			case SW:
+				imgView.setRotate(-225);
+				break;
+			case WSW:
+				imgView.setRotate(-247.50);
+				break;
+			case W:
+				imgView.setRotate(-270);
+				break;
+			case WNW:
+				imgView.setRotate(-292.50);
+				break;
+			case NW:
+				imgView.setRotate(-315);
+				break;
+			case NNW:
+				imgView.setRotate(-337.50);
+				break;
+			default:
+				imgView.setRotate(0);
+				break;
+			}
 		}
 	}
 

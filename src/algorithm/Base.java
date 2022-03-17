@@ -21,9 +21,10 @@ public class Base {
 		}
 
 		this.calculateDest();
-//		for (Drone drone : this.drones) {
-//			System.out.println(drone.toString());
-//		}
+
+		for (Drone drone : this.drones) {
+			System.out.println(drone.toString());
+		}
 	}
 
 	public ArrayList<Drone> getDrones() {
@@ -60,11 +61,11 @@ public class Base {
 		for (Drone drone : this.drones) {
 			drone.setDestX(widthDist * ((drone.getId() % col) + 1));
 			drone.setDestY(heightDist * ((drone.getId() / row) + 1));
+			drone.defineDirection();
 		}
 	}
 
-	private void errorFunc() {
-
-	}
+//	private void errorFunc() {
+//	}
 
 }

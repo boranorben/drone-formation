@@ -42,9 +42,9 @@ public enum Direction {
 	SE,
 
 	/**
-	 * South East East
+	 * South South East
 	 */
-	SEE,
+	SSE,
 
 	/**
 	 * South
@@ -82,7 +82,7 @@ public enum Direction {
 	NW,
 
 	/**
-	 * North West West
+	 * North North West
 	 */
-	NWW;
+	NNW;
 }
