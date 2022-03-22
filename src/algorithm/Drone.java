@@ -50,115 +50,29 @@ public class Drone {
 	}
 
 	public void defineDirection() {
+		double diffDx = this.destDx - this.dx;
+		double diffDy = this.destDy - this.dy;
+		double destDiff = this.destDx - this.destDy;
+
 		if (this.destDx > 0 && this.destDy > 0) {
-			if (this.destDx == this.dx && this.destDy >= this.dy) {
-				this.direction = Direction.N;
-			} else if (this.destDx < this.destDy) {
-				this.direction = Direction.NNE;
-			} else if (this.destDx == this.destDy) {
-				this.direction = Direction.NE;
-			} else if (this.destDx > this.destDy) {
-				this.direction = Direction.ENE;
-			}
+			this.direction = (diffDx == 0 && diffDy >= 0) ? Direction.N
+					: destDiff < 0 ? Direction.NNE : destDiff == 0 ? Direction.NE : Direction.ENE;
 		} else if (this.destDx > 0 && this.destDy < 0) {
-			if (this.destDy == this.dy && this.destDx >= this.dx) {
-				this.direction = Direction.E;
-			} else if (this.destDx > this.destDy) {
-				this.direction = Direction.ESE;
-			} else if (this.destDx == this.destDy) {
-				this.direction = Direction.SE;
-			} else if (this.destDx < this.destDy) {
-				this.direction = Direction.SSE;
-			}
+			this.direction = (diffDy == 0 && diffDx >= 0) ? Direction.E
+					: destDiff > 0 ? Direction.ESE : destDiff == 0 ? Direction.SE : Direction.SSE;
 		} else if (this.destDx < 0 && this.destDy < 0) {
-			if (this.destDx == this.dx && this.destDy <= this.dy) {
-				this.direction = Direction.S;
-			} else if (this.destDx < this.destDy) {
-				this.direction = Direction.SSW;
-			} else if (this.destDx == this.destDy) {
-				this.direction = Direction.SW;
-			} else if (this.destDx > this.destDy) {
-				this.direction = Direction.WSW;
-			}
+			this.direction = (diffDx == 0 && diffDy <= 0) ? Direction.S
+					: destDiff < 0 ? Direction.SSW : destDiff == 0 ? Direction.SW : Direction.WSW;
 		} else if (this.destDx < 0 && this.destDy > 0) {
-			if (this.destDy == this.dy && this.destDx <= this.dx) {
-				this.direction = Direction.W;
-			} else if (this.destDx > this.destDy) {
-				this.direction = Direction.WNW;
-			} else if (this.destDx == this.destDy) {
-				this.direction = Direction.NW;
-			} else if (this.destDx < this.destDy) {
-				this.direction = Direction.NNW;
-			}
+			this.direction = (diffDy == 0 && diffDx <= 0) ? Direction.W
+					: destDiff > 0 ? Direction.WNW : destDiff == 0 ? Direction.NW : Direction.NNW;
 		}
 	}
 
 	public void move() {
 		if (this.dx != this.destDx || this.dy != this.destDy) {
-			switch (this.direction) {
-			case N:
-				this.dy += 1;
-				break;
-			case NNE:
-				this.dx += 0.5;
-				this.dy += 1;
-				break;
-			case NE:
-				this.dx += 1;
-				this.dy += 1;
-				break;
-			case ENE:
-				this.dx += 1;
-				this.dy += 0.5;
-				break;
-			case E:
-				this.dx += 1;
-				break;
-			case ESE:
-				this.dx += 1;
-				this.dy -= 0.5;
-				break;
-			case SE:
-				this.dx += 1;
-				this.dy -= 1;
-				break;
-			case SSE:
-				this.dx += 0.5;
-				this.dy -= 1;
-				break;
-			case S:
-				this.dy -= 1;
-				break;
-			case SSW:
-				this.dx -= 0.5;
-				this.dy -= 1;
-				break;
-			case SW:
-				this.dx -= 1;
-				this.dy -= 1;
-				break;
-			case WSW:
-				this.dx -= 1;
-				this.dy -= 0.5;
-				break;
-			case W:
-				this.dx -= 1;
-				break;
-			case WNW:
-				this.dx -= 1;
-				this.dy += 0.5;
-				break;
-			case NW:
-				this.dx -= 1;
-				this.dy += 1;
-				break;
-			case NNW:
-				this.dx -= 0.5;
-				this.dy += 1;
-				break;
-			default:
-				break;
-			}
+			this.dx += this.direction.offsetX;
+			this.dy += this.direction.offsetY;
 		}
 	}
 

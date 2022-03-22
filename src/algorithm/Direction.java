@@ -1,7 +1,7 @@
 package algorithm;
 
 /**
- * Directions of Drones
+ * Sixteen points direction of Drones.
  * 
  * @author Issaree Srisomboon
  *
@@ -10,79 +10,93 @@ public enum Direction {
 	/**
 	 * North
 	 */
-	N,
+	N(0, 1),
 
 	/**
 	 * North North East
 	 */
-	NNE,
+	NNE(0.5, 1),
 
 	/**
 	 * North East
 	 */
-	NE,
+	NE(1, 1),
 
 	/**
 	 * East North East
 	 */
-	ENE,
+	ENE(1, 0.5),
 
 	/**
 	 * East
 	 */
-	E,
+	E(1, 0),
 	/**
 	 * East South East
 	 */
-	ESE,
+	ESE(1, -0.5),
 
 	/**
 	 * South East
 	 */
-	SE,
+	SE(1, -1),
 
 	/**
 	 * South South East
 	 */
-	SSE,
+	SSE(0.5, -1),
 
 	/**
 	 * South
 	 */
-	S,
+	S(0, -1),
 
 	/**
 	 * South South West
 	 */
-	SSW,
+	SSW(-0.5, -1),
 
 	/**
 	 * 
 	 */
-	SW,
+	SW(-1, -1),
 
 	/**
 	 * West South West
 	 */
-	WSW,
+	WSW(-1, -0.5),
 
 	/**
 	 * West
 	 */
-	W,
+	W(-1, 0),
 
 	/**
 	 * West North West
 	 */
-	WNW,
+	WNW(-1, 0.5),
 
 	/**
 	 * North West
 	 */
-	NW,
+	NW(-1, 1),
 
 	/**
 	 * North North West
 	 */
-	NNW;
+	NNW(-0.5, 1);
+
+	public final double offsetX;
+	public final double offsetY;
+
+	/**
+	 * Constructor of Direction with offset movement parameters X and Y.
+	 * 
+	 * @param offsetX
+	 * @param offsetY
+	 */
+	private Direction(double offsetX, double offsetY) {
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}
 }
