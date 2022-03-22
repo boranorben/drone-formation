@@ -87,17 +87,26 @@ public class MainSceneController implements Initializable {
 			this.startBtn.setDisable(this.droneTableView.getItems() == null ? true : false);
 		});
 
-//		this.time = new AnimationTimer() {
-//
-//			@Override
-//			public void handle(long arg0) {
+		this.time = new AnimationTimer() {
+			private long lastUpdate = 0;
+			private int id = 0;
+
+			@Override
+			public void handle(long now) {
+				// update every 1 second
+				if (now - this.lastUpdate >= 1_000_000_000) {
+					System.out.println(id);
+					id++;
+					this.lastUpdate = now;
+				}
+
 //				controlBase.moveDrones();
 //				for (Drone drone : controlBase.getDrones()) {
 //					System.out.println(drone.toString());
 //				}
-//			}
-//
-//		};
+			}
+
+		};
 	}
 
 	private void comboBoxAddListener(ComboBox<String> comboBox) {
@@ -106,28 +115,21 @@ public class MainSceneController implements Initializable {
 		});
 	}
 
-	private void updateTableView() {
-		this.idColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("id"));
-		this.directionColumn.setCellValueFactory(new PropertyValueFactory<Drone, Direction>("direction"));
-		this.velocityColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("velocity"));
-		this.durationColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("duration"));
-
-		ObservableList<Drone> drones = FXCollections.observableArrayList(this.controlBase.getDrones());
-		this.droneTableView.setItems(drones);
-	}
-
 	@FXML
 	public void addDrone(ActionEvent event) {
-		double direction = reformatComboBoxItem(this.directionComboBox);
-		int velocity = (int) reformatComboBoxItem(this.velocityComboBox);
-		int duration = (int) reformatComboBoxItem(this.durationComboBox);
+		try {
+			double direction = reformatComboBoxItem(this.directionComboBox);
+			int velocity = (int) reformatComboBoxItem(this.velocityComboBox);
+			int duration = (int) reformatComboBoxItem(this.durationComboBox);
 
-		this.controlBase.addDrone(this.droneId, direction, velocity, duration);
-		this.droneId++;
-		this.clearComboBox();
+			this.controlBase.addDrone(this.droneId, direction, velocity, duration);
+			this.droneId++;
+			this.clearComboBox();
 
-		this.updateTableView();
-
+			this.updateTableView();
+		} catch (Exception e) {
+			this.addDroneBtn.setDisable(true);
+		}
 	}
 
 	private double reformatComboBoxItem(ComboBox<String> comboBox) {
@@ -148,27 +150,27 @@ public class MainSceneController implements Initializable {
 		this.durationComboBox.setPromptText("Time Selection");
 	}
 
-	@FXML
-	public void start(ActionEvent event) {
-		this.startBtn.setDisable(true);
-//
-//		String[] areaSize = this.sizeAreaTextField.getText().split("/");
-//		int areaHeight = Integer.parseInt(areaSize[0]);
-//		int areaWidth = Integer.parseInt(areaSize[1]);
-//
-//		int numDrones = Integer.parseInt(this.numDronesTextField.getText());
-//
-//		this.controlBase = new Base(this, areaHeight, areaWidth, numDrones);
-//
-//		this.intializeMonitorPane(areaHeight, areaWidth);
-//		this.createDrones(numDrones);
-//		this.time.start();
+	private void updateTableView() {
+		this.idColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("id"));
+		this.directionColumn.setCellValueFactory(new PropertyValueFactory<Drone, Direction>("direction"));
+		this.velocityColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("velocity"));
+		this.durationColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("duration"));
 
+		ObservableList<Drone> drones = FXCollections.observableArrayList(this.controlBase.getDrones());
+		this.droneTableView.setItems(drones);
 	}
 
-	private void createDrones(int numDrones) {
+	@FXML
+	public void start(ActionEvent event) {
+		this.addDroneBtn.setDisable(true);
+		this.startBtn.setDisable(true);
+		this.createDrones();
+		this.time.start();
+	}
+
+	private void createDrones() {
 		Image droneImg = new Image("file:/Users/boranorben/Downloads/droneimg.png", 50, 50, false, false);
-		this.droneImgViews = new ArrayList<ImageView>(numDrones);
+		this.droneImgViews = new ArrayList<ImageView>(this.controlBase.getDrones().size());
 
 		for (Drone drone : this.controlBase.getDrones()) {
 			ImageView droneImgView = new ImageView(droneImg);
@@ -182,65 +184,13 @@ public class MainSceneController implements Initializable {
 	}
 
 	public void updateDronesPos() {
-//		for (Drone drone : this.controlBase.getDrones()) {
-//			ImageView imgView = this.droneImgViews.get(drone.getId());
-//
-//			imgView.setX(drone.getX());
-//			imgView.setY(drone.getY());
-//			switch (drone.getDirection()) {
-//			case N:
-//				imgView.setRotate(0);
-//				break;
-//			case NNE:
-//				imgView.setRotate(-22.5);
-//				break;
-//			case NE:
-//				imgView.setRotate(-45);
-//				break;
-//			case ENE:
-//				imgView.setRotate(-67.5);
-//				break;
-//			case E:
-//				imgView.setRotate(-90);
-//				break;
-//			case ESE:
-//				imgView.setRotate(-112.50);
-//				break;
-//			case SE:
-//				imgView.setRotate(-135);
-//				break;
-//			case SSE:
-//				imgView.setRotate(-157.50);
-//				break;
-//			case S:
-//				imgView.setRotate(-180);
-//				break;
-//			case SSW:
-//				imgView.setRotate(-202.50);
-//				break;
-//			case SW:
-//				imgView.setRotate(-225);
-//				break;
-//			case WSW:
-//				imgView.setRotate(-247.50);
-//				break;
-//			case W:
-//				imgView.setRotate(-270);
-//				break;
-//			case WNW:
-//				imgView.setRotate(-292.50);
-//				break;
-//			case NW:
-//				imgView.setRotate(-315);
-//				break;
-//			case NNW:
-//				imgView.setRotate(-337.50);
-//				break;
-//			default:
-//				imgView.setRotate(0);
-//				break;
-//			}
-//		}
+		for (Drone drone : this.controlBase.getDrones()) {
+
+			ImageView imgView = this.droneImgViews.get(drone.getId());
+			imgView.setX(drone.getX());
+			imgView.setY(drone.getY());
+			imgView.setRotate(-drone.getDirection().degree);
+		}
 	}
 
 }

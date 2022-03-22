@@ -15,10 +15,6 @@ public class Base {
 		this.drones = new ArrayList<Drone>();
 
 //		this.calculateDest();
-//
-//		for (Drone drone : this.drones) {
-//			System.out.println(drone.toString());
-//		}
 	}
 
 	public void addDrone(int id, double degree, int velocity, int duration) {
@@ -38,9 +34,7 @@ public class Base {
 	}
 
 	public String toString() {
-//		return String.format("The size of area is height: %d, width: %d and the number of drones is %d",
-//				this.areaHeight, this.areaWidth, this.drones.size());
-		return "";
+		return String.format("The number of drones is %d", this.drones.size());
 	}
 
 	public void moveDrones() {
@@ -50,7 +44,7 @@ public class Base {
 //		}
 	}
 
-	private void calculateDest() {
+//	private void calculateDest() {
 //		int row = (int) Math.round(Math.sqrt(this.drones.size()));
 //		int col = 0;
 //		final int droneSize = 25;
@@ -70,7 +64,7 @@ public class Base {
 //			drone.setDestY(heightDist * ((drone.getId() / row) + 1));
 ////			drone.defineDirection();
 //		}
-	}
+//	}
 
 //	private void errorFunc() {
 //	}
