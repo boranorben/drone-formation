@@ -10,92 +10,95 @@ public enum Direction {
 	/**
 	 * North
 	 */
-	N(0, 1),
+	N(0, 0, 1),
 
 	/**
 	 * North North East
 	 */
-	NNE(0.5, 1),
+	NNE(22.5, 0.5, 1),
 
 	/**
 	 * North East
 	 */
-	NE(1, 1),
+	NE(45, 1, 1),
 
 	/**
 	 * East North East
 	 */
-	ENE(1, 0.5),
+	ENE(57.5, 1, 0.5),
 
 	/**
 	 * East
 	 */
-	E(1, 0),
+	E(90, 1, 0),
 	/**
 	 * East South East
 	 */
-	ESE(1, -0.5),
+	ESE(112.5, 1, -0.5),
 
 	/**
 	 * South East
 	 */
-	SE(1, -1),
+	SE(135, 1, -1),
 
 	/**
 	 * South South East
 	 */
-	SSE(0.5, -1),
+	SSE(157.5, 0.5, -1),
 
 	/**
 	 * South
 	 */
-	S(0, -1),
+	S(180, 0, -1),
 
 	/**
 	 * South South West
 	 */
-	SSW(-0.5, -1),
+	SSW(202.5, -0.5, -1),
 
 	/**
 	 * 
 	 */
-	SW(-1, -1),
+	SW(225, -1, -1),
 
 	/**
 	 * West South West
 	 */
-	WSW(-1, -0.5),
+	WSW(247.5, -1, -0.5),
 
 	/**
 	 * West
 	 */
-	W(-1, 0),
+	W(270, -1, 0),
 
 	/**
 	 * West North West
 	 */
-	WNW(-1, 0.5),
+	WNW(292.5, -1, 0.5),
 
 	/**
 	 * North West
 	 */
-	NW(-1, 1),
+	NW(315, -1, 1),
 
 	/**
 	 * North North West
 	 */
-	NNW(-0.5, 1);
+	NNW(337.5, -0.5, 1);
 
+	public final double degree;
 	public final double offsetX;
 	public final double offsetY;
 
 	/**
-	 * Constructor of Direction with offset movement parameters X and Y.
+	 * Constructor of Direction with degree and offset movement parameters X and Y.
 	 * 
+	 * @param degree
 	 * @param offsetX
 	 * @param offsetY
 	 */
-	private Direction(double offsetX, double offsetY) {
+	private Direction(double degree, double offsetX, double offsetY) {
+		this.degree = degree;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 	}
