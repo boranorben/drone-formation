@@ -33,7 +33,7 @@
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="197.0" prefWidth="254.0">
                                        <children>
-                                          <Button fx:id="startBtn" defaultButton="true" disable="true" layoutX="76.0" layoutY="181.0" mnemonicParsing="false" onAction="#start" text="Start Simulation" />
+                                          <Button fx:id="startBtn" defaultButton="true" layoutX="76.0" layoutY="181.0" mnemonicParsing="false" onAction="#start" text="Start Simulation" />
                                           <TableView fx:id="droneTableView" layoutX="14.0" layoutY="14.0" prefHeight="158.0" prefWidth="227.0">
                                             <columns>
                                               <TableColumn fx:id="idColumn" prefWidth="44.0" text="id" />

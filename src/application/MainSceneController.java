@@ -4,9 +4,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import algorithm.Base;
 import algorithm.Direction;
 import algorithm.Drone;
+import algorithm.Simulator;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,10 +57,13 @@ public class MainSceneController implements Initializable {
 	@FXML
 	private AnchorPane monitorPane;
 
-	private Base controlBase;
+	private Simulator simulator;
+	private int idCnt;
+	private double interAddTime;
+
 	private ArrayList<ImageView> droneImgViews;
+	private Image droneImg;
 	private AnimationTimer time;
-	private int droneId;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -80,28 +83,29 @@ public class MainSceneController implements Initializable {
 		this.durationComboBox.getItems().addAll(durations);
 		this.comboBoxAddListener(this.durationComboBox);
 
-		this.controlBase = new Base(this);
-		this.droneId = 0;
+		this.simulator = new Simulator(this);
+		this.idCnt = 0;
+		this.interAddTime = 0;
 
-		this.droneTableView.itemsProperty().addListener(e -> {
-			this.startBtn.setDisable(this.droneTableView.getItems() == null ? true : false);
-		});
+//		this.droneTableView.itemsProperty().addListener(e -> {
+//			this.startBtn.setDisable(this.droneTableView.getItems() == null ? true : false);
+//		});
+
+		this.droneImgViews = new ArrayList<ImageView>();
+		this.droneImg = new Image("file:/Users/boranorben/Downloads/droneimg.png", 40, 40, false, false);
 
 		this.time = new AnimationTimer() {
-			private long lastUpdate = 0;
-			private int id = 0;
+//			private long lastUpdate = 0;
 
 			@Override
 			public void handle(long now) {
+				System.out.println(now);
 				// update every 1 second
-				if (now - this.lastUpdate >= 1_000_000_000) {
-					System.out.println(id);
-					id++;
-					this.lastUpdate = now;
-				}
-
-//				controlBase.moveDrones();
-//				for (Drone drone : controlBase.getDrones()) {
+//				if (now - this.lastUpdate >= 1_000_000_000) {
+//					this.lastUpdate = now;
+//					interAddTime = now;
+//				}
+//				for (Drone drone : simulator.getDrones()) {
 //					System.out.println(drone.toString());
 //				}
 			}
@@ -122,9 +126,11 @@ public class MainSceneController implements Initializable {
 			int velocity = (int) reformatComboBoxItem(this.velocityComboBox);
 			int duration = (int) reformatComboBoxItem(this.durationComboBox);
 
-			this.controlBase.addDrone(this.droneId, direction, velocity, duration);
-			this.droneId++;
+			this.simulator.addDrone(this.idCnt, direction, velocity, duration, this.interAddTime);
+			this.idCnt++;
+
 			this.clearComboBox();
+			this.createDroneImgView();
 
 			this.updateTableView();
 		} catch (Exception e) {
@@ -156,35 +162,32 @@ public class MainSceneController implements Initializable {
 		this.velocityColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("velocity"));
 		this.durationColumn.setCellValueFactory(new PropertyValueFactory<Drone, Integer>("duration"));
 
-		ObservableList<Drone> drones = FXCollections.observableArrayList(this.controlBase.getDrones());
+		ObservableList<Drone> drones = FXCollections.observableArrayList(this.simulator.getDrones());
 		this.droneTableView.setItems(drones);
+	}
+
+	private void createDroneImgView() {
+		Drone drone = this.simulator.getDrones().get(this.simulator.getDrones().size() - 1);
+
+		ImageView droneImgView = new ImageView(this.droneImg);
+		this.droneImgViews.add(droneImgView);
+
+		droneImgView.setX(drone.getX());
+		droneImgView.setY(drone.getY());
+
+		this.monitorPane.getChildren().add(droneImgView);
 	}
 
 	@FXML
 	public void start(ActionEvent event) {
-		this.addDroneBtn.setDisable(true);
 		this.startBtn.setDisable(true);
-		this.createDrones();
 		this.time.start();
-	}
-
-	private void createDrones() {
-		Image droneImg = new Image("file:/Users/boranorben/Downloads/droneimg.png", 50, 50, false, false);
-		this.droneImgViews = new ArrayList<ImageView>(this.controlBase.getDrones().size());
-
-		for (Drone drone : this.controlBase.getDrones()) {
-			ImageView droneImgView = new ImageView(droneImg);
-			this.droneImgViews.add(droneImgView);
-
-			droneImgView.setX(drone.getX());
-			droneImgView.setY(drone.getY());
-
-			this.monitorPane.getChildren().add(droneImgView);
-		}
+		// not responsive
+		this.simulator.startEvents();
 	}
 
 	public void updateDronesPos() {
-		for (Drone drone : this.controlBase.getDrones()) {
+		for (Drone drone : this.simulator.getDrones()) {
 
 			ImageView imgView = this.droneImgViews.get(drone.getId());
 			imgView.setX(drone.getX());
